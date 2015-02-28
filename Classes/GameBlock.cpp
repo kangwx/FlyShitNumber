@@ -46,6 +46,7 @@ bool GameBlock::initWithArgs(Color3B color,Size size,std::string label,float fon
     setColor(color);
     
     auto l = Label::create();
+    
     l->setString(label);
     l->setSystemFontSize(fontSize);
     l->setTextColor(textColor);
@@ -84,10 +85,12 @@ void GameBlock::moveDown(){
         stopAllActions();
     }
     
-    runAction(Sequence::create(MoveTo::create(0.1f, Point(getPositionX(), lineIndex*visibleSize.height/4)),
+    //runAction(Sequence::create(MoveTo::create(0.1f, Point(getPositionX(), lineIndex*visibleSize.height/4)),
+	runAction(Sequence::create( 
                                CallFunc::create([this](){
         
         if (lineIndex<0) {
+			log(">>> removeBlock");
             this->removeBlock();
         }
         
