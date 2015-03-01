@@ -24,6 +24,7 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     void addNormalLine(int lineIndex);
+    void addFlyShit();
 	void dropShit(float dt);
 
     // implement the "static create()" method manually

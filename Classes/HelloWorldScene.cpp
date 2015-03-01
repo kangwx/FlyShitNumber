@@ -39,7 +39,8 @@ bool HelloWorld::init()
     
     addChild(gameLayer);
     addNormalLine(3);
-	
+	addFlyShit();
+
 	schedule(schedule_selector(HelloWorld::dropShit),3);
 
     return true;
@@ -55,6 +56,20 @@ void HelloWorld::dropShit(float dt){
     }
 }
 
+ void HelloWorld::addFlyShit( ){
+    
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    GameBlock *b;
+    
+     
+		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),"2",20,Color4B::BLACK);
+        gameLayer->addChild(b);
+		 
+		b->setPosition( visibleSize.width/4+visibleSize.width/8,0);
+        b->setLineIndex(999);
+     
+     
+}
  void HelloWorld::addNormalLine(int lineIndex){
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -71,14 +86,14 @@ void HelloWorld::dropShit(float dt){
 		b = GameBlock::createWithArgs(blackIndex==i?Color3B::BLUE:Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),"1024",20,Color4B::BLACK);
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
-		
+		b->getPhysicsBody()->setVelocity(Vec2(0,40));
 		//b->setAnchorPoint(Point::ZERO);
 		int tempIndex = i+blackIndex;
 		if(tempIndex>=4){
 			tempIndex=tempIndex-4;
 		}
 
-		b->setPosition(tempIndex*visibleSize.width/4+visibleSize.width/8, lineIndex*visibleSize.height/2);
+		b->setPosition(tempIndex*visibleSize.width/4+visibleSize.width/8, (lineIndex+(rand()%4*0.5f))*visibleSize.height/2);
         b->setLineIndex(lineIndex);
     }
     
