@@ -38,10 +38,48 @@ bool HelloWorld::init()
     gameLayer = Node::create();
     
     addChild(gameLayer);
+	 
     addNormalLine(3);
 	addFlyShit();
 
 	schedule(schedule_selector(HelloWorld::dropShit),3);
+
+	//auto listener = EventListenerTouchAllAtOnce::create();
+	auto listener = EventListenerTouchOneByOne::create();
+	
+	listener->onTouchBegan =[this]( Touch*   t, Event* event)
+	{ 
+		beginPoint = this->convertTouchToNodeSpace(t ); 
+	 
+		return true;
+	};
+	listener->onTouchMoved = [this]( Touch*   t, Event* event)
+	{
+	 
+	
+	};
+	listener->onTouchEnded = [this]( Touch*   t, Event* event)
+	{ 
+		Point movePoint = this->convertTouchToNodeSpace(t );
+		int xf = movePoint.x-beginPoint.x;
+		int yf = movePoint.y-beginPoint.y;
+		if(abs(xf) > 10 ){
+			//char direction = (abs(xf) > abs(yf)) ? (xf < 15 ? 'a':'d'): (yf > 15 ? 'w' : 's');
+			char direction =  xf < 0 ? 'l':'r';
+			log("direction:%c",direction);
+			flyShit->moveByDirection(direction);
+		} 
+	  
+	};
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,gameLayer);
+
+
+	 auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_2(HelloWorld::onContactBegin, this);
+
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+
+    dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     return true;
 }
@@ -49,27 +87,43 @@ bool HelloWorld::init()
 void HelloWorld::dropShit(float dt){
     addNormalLine(3);
 	auto bs = GameBlock::getBlocks();
-	log(">>>>>>>>> size:");
-	
+	 
     for (auto it = bs->begin(); it!=bs->end(); it++) {
         (*it)->moveDown();
     }
 }
 
+void HelloWorld::addEdges(){
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+	
+	auto body = PhysicsBody::createEdgeBox(Size(visibleSize.width,visibleSize.height*2),PHYSICSBODY_MATERIAL_DEFAULT,3);
+
+	auto edgeShape = Node::create();
+	edgeShape->setPhysicsBody(body);
+	edgeShape->setPosition(visibleSize.width/2,visibleSize.height/2);
+	addChild(edgeShape);
+
+
+}
+
  void HelloWorld::addFlyShit( ){
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    GameBlock *b;
+    //GameBlock *flyShit;
     
      
-		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),"2",20,Color4B::BLACK);
-        gameLayer->addChild(b);
+	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),"2",20,Color4B::BLACK);
+    gameLayer->addChild(flyShit);
 		 
-		b->setPosition( visibleSize.width/4+visibleSize.width/8,0);
-        b->setLineIndex(999);
+	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
+	flyShit->getPhysicsBody()->setDynamic(false);
+
+	flyShit->setPosition( visibleSize.width/4+visibleSize.width/8,flyShit->getContentSize().height/2+5);
+    flyShit->setLineIndex(999);
      
      
 }
+
  void HelloWorld::addNormalLine(int lineIndex){
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -98,4 +152,10 @@ void HelloWorld::dropShit(float dt){
     }
     
     linesCount++;
+}
+
+bool HelloWorld::onContactBegin(   PhysicsContact& contact)
+{
+     
+    return true;
 }

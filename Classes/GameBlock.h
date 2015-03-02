@@ -34,6 +34,7 @@ public:
     void setLineIndex(int lineIndex);
     
     void moveDown();
+    void moveByDirection(char dir);
 };
 
 

@@ -42,6 +42,7 @@ bool GameBlock::initWithArgs(Color3B color,Size size,std::string label,float fon
     
     setContentSize(size);
     setAnchorPoint(Point::ZERO);
+	//setAnchorPoint(Point(-size.width/2,-size.height/2));
     setTextureRect(Rect(0, 0, size.width, size.height));
     setColor(color);
     
@@ -95,6 +96,28 @@ void GameBlock::moveDown(){
         }
         
     }), NULL));
+    
+}
+void GameBlock::moveByDirection(char dir){
+    
+     
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
+    if (getNumberOfRunningActions()!=0) {
+        stopAllActions();
+    }
+	float x = visibleSize.width/4;
+	float y = this->getContentSize().height/2+5;
+	log("moveByDirection:%c",dir);
+	if(dir=='l'){
+		x=this->getPosition().x-visibleSize.width/4;
+		x=x<=this->getContentSize().width/2?x=this->getContentSize().width/2:x;
+	}else{
+		float temp = visibleSize.width - this->getContentSize().width/2; 
+		x=this->getPosition().x+visibleSize.width/4;
+		x=x>temp?temp:x;
+	}
+    runAction(Sequence::create(MoveTo::create(0.1f, Point(x, y))  , NULL));
     
 }
 
