@@ -74,8 +74,8 @@ bool HelloWorld::init()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,gameLayer);
 
 
-	 auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_2(HelloWorld::onContactBegin, this);
+	auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
 
     auto dispatcher = Director::getInstance()->getEventDispatcher();
 
@@ -118,6 +118,9 @@ void HelloWorld::addEdges(){
 	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
 	flyShit->getPhysicsBody()->setDynamic(false);
 
+	//flyShit->getPhysicsBody()->setCategoryBitmask(0);
+	flyShit->getPhysicsBody()->setCollisionBitmask(2);
+
 	flyShit->setPosition( visibleSize.width/4+visibleSize.width/8,flyShit->getContentSize().height/2+5);
     flyShit->setLineIndex(999);
      
@@ -154,8 +157,8 @@ void HelloWorld::addEdges(){
     linesCount++;
 }
 
-bool HelloWorld::onContactBegin(   PhysicsContact& contact)
+bool HelloWorld::onContactBegin(PhysicsContact& contact)
 {
-     
+     log("onContactBegin");
     return true;
 }
