@@ -117,9 +117,8 @@ void HelloWorld::addEdges(){
 		 
 	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
 	flyShit->getPhysicsBody()->setDynamic(false);
-
-	//flyShit->getPhysicsBody()->setCategoryBitmask(0);
-	flyShit->getPhysicsBody()->setCollisionBitmask(2);
+	 
+	flyShit->getPhysicsBody()->setContactTestBitmask(1);
 
 	flyShit->setPosition( visibleSize.width/4+visibleSize.width/8,flyShit->getContentSize().height/2+5);
     flyShit->setLineIndex(999);
@@ -144,6 +143,8 @@ void HelloWorld::addEdges(){
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
 		b->getPhysicsBody()->setVelocity(Vec2(0,40));
+		b->getPhysicsBody()->setContactTestBitmask(2);
+		b->setTag(2);
 		//b->setAnchorPoint(Point::ZERO);
 		int tempIndex = i+blackIndex;
 		if(tempIndex>=4){
@@ -159,6 +160,13 @@ void HelloWorld::addEdges(){
 
 bool HelloWorld::onContactBegin(PhysicsContact& contact)
 {
+
      log("onContactBegin");
+	 int tagA = contact.getShapeA()->getTag();
+	 int tagB = contact.getShapeB()->getTag();
+	 if(tagA==tagB){
+		 
+	 }
+
     return true;
 }
