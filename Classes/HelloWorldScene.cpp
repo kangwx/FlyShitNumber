@@ -2,6 +2,9 @@
 
 USING_NS_CC;
 
+#define DROP_SHIT_MASK 001
+#define FLY_SHIT_MASK 010
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
@@ -118,7 +121,7 @@ void HelloWorld::addEdges(){
 	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
 	flyShit->getPhysicsBody()->setDynamic(false);
 	 
-	flyShit->getPhysicsBody()->setContactTestBitmask(1);
+	flyShit->getPhysicsBody()->setContactTestBitmask(FLY_SHIT_MASK);
 
 	flyShit->setPosition( visibleSize.width/4+visibleSize.width/8,flyShit->getContentSize().height/2+5);
     flyShit->setLineIndex(999);
@@ -143,7 +146,7 @@ void HelloWorld::addEdges(){
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
 		b->getPhysicsBody()->setVelocity(Vec2(0,40));
-		b->getPhysicsBody()->setContactTestBitmask(2);
+		b->getPhysicsBody()->setContactTestBitmask(DROP_SHIT_MASK);
 		b->setTag(2);
 		//b->setAnchorPoint(Point::ZERO);
 		int tempIndex = i+blackIndex;
@@ -161,12 +164,22 @@ void HelloWorld::addEdges(){
 bool HelloWorld::onContactBegin(PhysicsContact& contact)
 {
 
-     log("onContactBegin");
+     
 	 int tagA = contact.getShapeA()->getTag();
 	 int tagB = contact.getShapeB()->getTag();
-	 if(tagA==tagB){
+	 switch(contact.getShapeA()->getBody()->getContactTestBitmask() |
+		 contact.getShapeB()->getBody()->getContactTestBitmask()){
+	 case FLY_SHIT_MASK | DROP_SHIT_MASK:
+		log("onContactBegin FLY_SHIT_MASK and DROP_SHIT_MASK");
+		if(tagA==tagB){
 		 
+		} 
+		 break;
+	 case DROP_SHIT_MASK:
+		 log("onContactBegin DROP_SHIT_MASK");
+		 break;
 	 }
+	
 
     return true;
 }
