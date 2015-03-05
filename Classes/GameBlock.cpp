@@ -49,6 +49,7 @@ bool GameBlock::initWithArgs(Color3B color,Size size,std::string label,float fon
     auto l = Label::create();
     
     l->setString(label);
+	l->setName("num");
     l->setSystemFontSize(fontSize);
     l->setTextColor(textColor);
     addChild(l);

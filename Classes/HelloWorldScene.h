@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 #include "GameBlock.h"
+#include <sstream>
+#include <string>
 
 using namespace std;
 class HelloWorld : public cocos2d::Layer
@@ -29,6 +31,7 @@ public:
     void addFlyShit();
 	void addEdges();
 	void dropShit(float dt);
+	string num2str(double i);
 
 	bool onContactBegin(    PhysicsContact& contact);
 
