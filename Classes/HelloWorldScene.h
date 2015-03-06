@@ -3,9 +3,10 @@
 
 #include "cocos2d.h"
 #include "GameBlock.h"
+#include "PauseScene.h"
 #include <sstream>
 #include <string>
-
+;
 using namespace std;
 class HelloWorld : public cocos2d::Layer
 {

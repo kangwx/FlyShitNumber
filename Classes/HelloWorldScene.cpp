@@ -211,7 +211,17 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 			}
 			flyNumber = newTag;
 		} else{
+			log("taga != tagb");
+			auto director = Director::getInstance();
+			Size visibleSize = Director::getInstance()->getVisibleSize();
+			RenderTexture *renderTexture = RenderTexture::create(visibleSize.width,visibleSize.height);  
+			renderTexture->begin();  
+			this->getParent()->visit();  
+			renderTexture->end();
 
+			
+			director->pushScene(PauseScene::scene(renderTexture,true));
+			 
 		}
 		 break;
 	 case DROP_SHIT_MASK:
