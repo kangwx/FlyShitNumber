@@ -1,4 +1,5 @@
 #include "MainScene.h"
+#include "HelloWorldScene.h"
 
 USING_NS_CC;
 bool MainScene::init()
@@ -11,11 +12,42 @@ bool MainScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point origin = Director::getInstance()->getVisibleOrigin();
 	int zorder = 1000;
+	
+
+	auto bg = Sprite::create("bg.png");
+    bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    this->addChild(bg);
 	 
+	auto btn_menu = MenuItemImage::create(
+		"btn_start.png",
+		"btn_start.png",
+		CC_CALLBACK_1(MainScene::menuPlayCallback, this));
+	btn_menu->setPosition(Point(visibleSize.width/2 + origin.x  , visibleSize.height/2 + origin.y ));
+
 	 
+	auto menu = Menu::create(btn_menu ,NULL);
+	menu->setPosition(Point::ZERO);
+	this->addChild(menu, zorder++); 
+
 	return true;
 } 
- 
+ Scene* MainScene::createScene()
+{
+    // 'scene' is an autorelease object
+    auto scene = Scene::create();
+	//auto scene = Scene::createWithPhysics();
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    
+    
+    // 'layer' is an autorelease object
+    auto layer = MainScene::create();
+
+    // add layer as a child to scene
+    scene->addChild(layer);
+
+    // return the scene
+    return scene;
+}
  
 
 void MainScene::menuMenuCallback(Ref* pSender)
@@ -24,10 +56,10 @@ void MainScene::menuMenuCallback(Ref* pSender)
 	 
 }
 
-void MainScene::menuReplayCallback(Ref* pSender)
+void MainScene::menuPlayCallback(Ref* pSender)
 {
 	 
-	Director::getInstance()->popScene();
+	Director::getInstance()->replaceScene(HelloWorld::createScene());
 }
 
 void MainScene::menuNextCallback(Ref* pSender)

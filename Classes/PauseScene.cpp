@@ -1,4 +1,5 @@
 #include "PauseScene.h"
+#include "MainScene.h"
 
 bool PauseScene::init()
 {
@@ -43,7 +44,8 @@ Scene* PauseScene::scene(RenderTexture* sqr,bool isFlip)
 void PauseScene::menuMenuCallback(Ref* pSender)
 {
 	log("pause scene popscene");
-	Director::getInstance()->popScene();
+	//Director::getInstance()->popScene();
+	Director::getInstance()->replaceScene(MainScene::createScene());
 	 
 }
 
