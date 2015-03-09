@@ -9,7 +9,7 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	CREATE_FUNC(MainScene);
-	void menuMenuCallback(Ref* pSender);
+	void menuMusicCallback(Ref* pSender);
 	void menuPlayCallback(Ref* pSender);
 	void menuNextCallback(Ref* pSender); 
 	 

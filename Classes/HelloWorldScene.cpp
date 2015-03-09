@@ -46,6 +46,13 @@ bool HelloWorld::init()
     Size visibleSize   = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
+	
+
+	auto bg = Sprite::create("bg.png");
+    bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    this->addChild(bg);
+	 
+
     GameBlock::removeAllBlocks();
 
     gameLayer = Node::create();

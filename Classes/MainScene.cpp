@@ -22,10 +22,15 @@ bool MainScene::init()
 		"btn_start.png",
 		"btn_start.png",
 		CC_CALLBACK_1(MainScene::menuPlayCallback, this));
-	btn_menu->setPosition(Point(visibleSize.width/2 + origin.x  , visibleSize.height/2 + origin.y ));
+	btn_menu->setPosition(Point(visibleSize.width/2 + 300  , visibleSize.height/2 - 400 ));
 
-	 
-	auto menu = Menu::create(btn_menu ,NULL);
+	 auto btn_music = MenuItemImage::create(
+		"btn_music.png",
+		"btn_music.png",
+		CC_CALLBACK_1(MainScene::menuMusicCallback, this));
+	btn_music->setPosition(Point(visibleSize.width/2 - 300  , visibleSize.height/2 - 500 ));
+
+	auto menu = Menu::create(btn_menu,btn_music ,NULL);
 	menu->setPosition(Point::ZERO);
 	this->addChild(menu, zorder++); 
 
@@ -50,7 +55,7 @@ bool MainScene::init()
 }
  
 
-void MainScene::menuMenuCallback(Ref* pSender)
+void MainScene::menuMusicCallback(Ref* pSender)
 {
 	 
 	 
