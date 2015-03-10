@@ -86,6 +86,7 @@ void GameBlock::moveDown(){
     if (getNumberOfRunningActions()!=0) {
         stopAllActions();
     }
+	 
     
     //runAction(Sequence::create(MoveTo::create(0.1f, Point(getPositionX(), lineIndex*visibleSize.height/4)),
 	runAction(Sequence::create( 
@@ -103,10 +104,10 @@ void GameBlock::moveByDirection(char dir){
     
      
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    
-    if (getNumberOfRunningActions()!=0) {
-        stopAllActions();
-    }
+     
+	if(getNumberOfRunningActions()!=0){
+		return;
+	}
 	float x = visibleSize.width/4;
 	float y = this->getContentSize().height/2+5;
 	log("moveByDirection:%c",dir);

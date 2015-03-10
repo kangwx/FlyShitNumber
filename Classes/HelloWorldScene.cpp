@@ -5,6 +5,7 @@ USING_NS_CC;
 #define DROP_SHIT_MASK 001
 #define FLY_SHIT_MASK 010
 int flyNumber = 2;
+int scoreNum = 2;
 
 string HelloWorld::num2str(double i)
 {
@@ -51,7 +52,13 @@ bool HelloWorld::init()
 	auto bg = Sprite::create("bg.png");
     bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(bg);
-	 
+	
+	score = Label::create();
+	score->setPosition(Point(visibleSize.width/2 -350 , visibleSize.height/2+500 ));
+	score->setString(num2str(scoreNum));
+    score->setSystemFontSize(40);
+	score->setTextColor(Color4B::BLUE);
+	this->addChild(score,1001);
 
     GameBlock::removeAllBlocks();
 
@@ -136,7 +143,7 @@ void HelloWorld::addEdges(){
 	//sprintf(cNumber, "%d",flyNumber); 
 	string label = num2str(flyNumber);
 
-	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,20,Color4B::BLACK);
+	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,40,Color4B::BLACK);
     gameLayer->addChild(flyShit);
 	flyShit->setTag(flyNumber);
 	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
@@ -163,7 +170,7 @@ void HelloWorld::addEdges(){
 	int arr[3]={-1,-1,-1}; 
 	int shitNumber =rand()%3*flyNumber+flyNumber; 
     for (int i=0; i<num; i++) {
-		b = GameBlock::createWithArgs(blackIndex==i?Color3B::BLUE:Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),20,Color4B::BLACK);
+		b = GameBlock::createWithArgs(blackIndex==i?Color3B::BLUE:Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK);
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
 		b->getPhysicsBody()->setVelocity(Vec2(0,40));
@@ -205,6 +212,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				spriteA->setTag(newTag);
 
 				spriteB->removeFromParent(); 
+				
 			}
 
 			if(contact.getShapeB()->getBody()->getContactTestBitmask() == FLY_SHIT_MASK){
@@ -216,6 +224,8 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 
 				spriteA->removeFromParent();
 			}
+			scoreNum = newTag;
+			score->setString(num2str(scoreNum));
 			flyNumber = newTag;
 		} else{
 			log("taga != tagb");

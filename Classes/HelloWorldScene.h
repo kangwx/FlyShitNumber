@@ -15,6 +15,7 @@ private:
     Node *gameLayer;
     int linesCount;
 	GameBlock *flyShit;
+	Label *score;
 
 public:
 
