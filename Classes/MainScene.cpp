@@ -1,5 +1,5 @@
 #include "MainScene.h"
-#include "HelloWorldScene.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 bool MainScene::init()
@@ -64,7 +64,7 @@ void MainScene::menuMusicCallback(Ref* pSender)
 void MainScene::menuPlayCallback(Ref* pSender)
 {
 	 
-	Director::getInstance()->replaceScene(HelloWorld::createScene());
+	Director::getInstance()->replaceScene(GameScene::createScene());
 }
 
 void MainScene::menuNextCallback(Ref* pSender)

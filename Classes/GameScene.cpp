@@ -1,14 +1,12 @@
-#include "HelloWorldScene.h"
+#include "GameScene.h"
 
 USING_NS_CC; 
 
 #define DROP_SHIT_MASK 001
 #define FLY_SHIT_MASK 010
-int flyNumber = 2;
-int scoreNum = 2;
-int shitCount = 0;
 
-string HelloWorld::num2str(double i)
+
+string GameScene::num2str(double i)
 {
 
 	stringstream ss;
@@ -17,7 +15,7 @@ string HelloWorld::num2str(double i)
 
 	return ss.str();
 }
-Scene* HelloWorld::createScene()
+Scene* GameScene::createScene()
 {
     // 'scene' is an autorelease object
     //auto scene = Scene::create();
@@ -27,7 +25,7 @@ Scene* HelloWorld::createScene()
     
     
     // 'layer' is an autorelease object
-    auto layer = HelloWorld::create();
+    auto layer = GameScene::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -37,7 +35,7 @@ Scene* HelloWorld::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool GameScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -49,7 +47,9 @@ bool HelloWorld::init()
     Size visibleSize   = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
-	
+	flyNumber = 2;
+	scoreNum = 2;
+	shitCount = 0;
 
 	auto bg = Sprite::create("bg.png");
     bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
@@ -71,8 +71,8 @@ bool HelloWorld::init()
     addNormalLine(3);
 	addFlyShit();
 
-	schedule(schedule_selector(HelloWorld::dropShit),3);
-	schedule(schedule_selector(HelloWorld::addDropShit),0.5f);
+	schedule(schedule_selector(GameScene::dropShit),3);
+	schedule(schedule_selector(GameScene::addDropShit),0.5f);
 
 	//auto listener = EventListenerTouchAllAtOnce::create();
 	auto listener = EventListenerTouchOneByOne::create();
@@ -105,7 +105,7 @@ bool HelloWorld::init()
 
 
 	auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
+    contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
 
     auto dispatcher = Director::getInstance()->getEventDispatcher();
 
@@ -114,7 +114,7 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::dropShit(float dt){
+void GameScene::dropShit(float dt){
     addNormalLine(3);
 	auto bs = GameBlock::getBlocks();
 	 
@@ -123,7 +123,7 @@ void HelloWorld::dropShit(float dt){
     }
 }
 
-void HelloWorld::addEdges(){
+void GameScene::addEdges(){
     Size visibleSize = Director::getInstance()->getVisibleSize();
 	
 	auto body = PhysicsBody::createEdgeBox(Size(visibleSize.width,visibleSize.height*2),PHYSICSBODY_MATERIAL_DEFAULT,3);
@@ -135,7 +135,7 @@ void HelloWorld::addEdges(){
 	 
 }
 
- void HelloWorld::addFlyShit( ){
+ void GameScene::addFlyShit( ){
     
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -160,7 +160,7 @@ void HelloWorld::addEdges(){
      
 }
  
-void HelloWorld::addDropShit(float dt){
+void GameScene::addDropShit(float dt){
 	if(shitCount>0){
 		int lineIndex =3;
 		int blackIndex = rand()%4;
@@ -185,7 +185,7 @@ void HelloWorld::addDropShit(float dt){
 		log("shitNumber:%d",shitCount);
 	}
 }
- void HelloWorld::addNormalLine(int lineIndex){
+ void GameScene::addNormalLine(int lineIndex){
     
     
     int num = rand()%4;
@@ -198,7 +198,7 @@ void HelloWorld::addDropShit(float dt){
      
 }
 
-bool HelloWorld::onContactBegin(PhysicsContact& contact)
+bool GameScene::onContactBegin(PhysicsContact& contact)
 {
 
      
@@ -245,7 +245,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 			renderTexture->end();
 
 			
-			director->pushScene(PauseScene::scene(renderTexture,true));
+			director->pushScene(OverScene::scene(renderTexture,true));
 			 
 		}
 		 break;

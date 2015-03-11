@@ -4,11 +4,12 @@
 #include "cocos2d.h"
 #include "GameBlock.h"
 #include "PauseScene.h"
+#include "OverScene.h"
 #include <sstream>
 #include <string>
 
 using namespace std;
-class HelloWorld : public cocos2d::Layer
+class GameScene : public cocos2d::Layer
 {
 private: 
 	Point beginPoint;
@@ -19,7 +20,9 @@ private:
 
 public:
 
-	
+	int flyNumber ;
+    int scoreNum  ;
+    int shitCount ;
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
@@ -39,7 +42,7 @@ public:
 	bool onContactBegin(    PhysicsContact& contact);
 
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(GameScene);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
