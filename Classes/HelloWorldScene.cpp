@@ -6,6 +6,7 @@ USING_NS_CC;
 #define FLY_SHIT_MASK 010
 int flyNumber = 2;
 int scoreNum = 2;
+int shitCount = 0;
 
 string HelloWorld::num2str(double i)
 {
@@ -22,6 +23,7 @@ Scene* HelloWorld::createScene()
     //auto scene = Scene::create();
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setGravity(Vec2(0,-500));
     
     
     // 'layer' is an autorelease object
@@ -70,6 +72,7 @@ bool HelloWorld::init()
 	addFlyShit();
 
 	schedule(schedule_selector(HelloWorld::dropShit),3);
+	schedule(schedule_selector(HelloWorld::addDropShit),0.5f);
 
 	//auto listener = EventListenerTouchAllAtOnce::create();
 	auto listener = EventListenerTouchOneByOne::create();
@@ -129,12 +132,12 @@ void HelloWorld::addEdges(){
 	edgeShape->setPhysicsBody(body);
 	edgeShape->setPosition(visibleSize.width/2,visibleSize.height/2);
 	addChild(edgeShape);
-
-
+	 
 }
 
  void HelloWorld::addFlyShit( ){
     
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     //GameBlock *flyShit;
     
@@ -153,41 +156,46 @@ void HelloWorld::addEdges(){
 
 	flyShit->setPosition( visibleSize.width/4+visibleSize.width/8,flyShit->getContentSize().height/2+5);
     flyShit->setLineIndex(9999);
-     
+	
      
 }
-
- void HelloWorld::addNormalLine(int lineIndex){
-    
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    GameBlock *b;
-    int blackIndex = rand()%4;
-    int num = rand()%4;
-	log("num:%d",num++);
-	if(num>3){
-		num=3;
-	}
-	int arr[3]={-1,-1,-1}; 
-	int shitNumber =rand()%3*flyNumber+flyNumber; 
-    for (int i=0; i<num; i++) {
-		b = GameBlock::createWithArgs(blackIndex==i?Color3B::BLUE:Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK);
+ 
+void HelloWorld::addDropShit(float dt){
+	if(shitCount>0){
+		int lineIndex =3;
+		int blackIndex = rand()%4;
+		int shitNumber =rand()%3*flyNumber+flyNumber; 
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		GameBlock *b;
+		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK);
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
-		b->getPhysicsBody()->setVelocity(Vec2(0,40));
+		//b->getPhysicsBody()->setVelocity(Vec2(0,40));
 		b->getPhysicsBody()->setContactTestBitmask(DROP_SHIT_MASK);
 		b->setTag(shitNumber);
 		//b->setAnchorPoint(Point::ZERO);
-		int tempIndex = i+blackIndex;
+		int tempIndex =  blackIndex;
 		if(tempIndex>=4){
 			tempIndex=tempIndex-4;
 		}
 
-		b->setPosition(tempIndex*visibleSize.width/4+visibleSize.width/8, (lineIndex+(rand()%4*0.5f))*visibleSize.height/2);
-        b->setLineIndex(lineIndex);
-		shitNumber =rand()%3*flyNumber+flyNumber; 
-    }
+		b->setPosition(tempIndex*visibleSize.width/4+visibleSize.width/8,  lineIndex *visibleSize.height/2);
+        b->setLineIndex(lineIndex); 
+		shitCount--;
+		log("shitNumber:%d",shitCount);
+	}
+}
+ void HelloWorld::addNormalLine(int lineIndex){
     
-    linesCount++;
+    
+    int num = rand()%4;
+	log("num:%d",num++);
+	if(num>3){
+		num=3;
+	} 
+    
+    shitCount=num;
+     
 }
 
 bool HelloWorld::onContactBegin(PhysicsContact& contact)

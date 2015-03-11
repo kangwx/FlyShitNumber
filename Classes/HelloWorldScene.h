@@ -30,6 +30,7 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     void addNormalLine(int lineIndex);
+	void addDropShit(float dt);
     void addFlyShit();
 	void addEdges();
 	void dropShit(float dt);
