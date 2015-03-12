@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 #include "GameBlock.h"
 #include "PauseScene.h"
+#include "TDInvFileUtils.h"
+#include "Constants.h"
 #include "OverScene.h"
 #include <sstream>
 #include <string>
@@ -17,9 +19,10 @@ private:
     int linesCount;
 	GameBlock *flyShit;
 	Label *score;
+	Label *bestScore;
 
 public:
-
+	static int m_bestScore;
 	int flyNumber ;
     int scoreNum  ;
     int shitCount ;

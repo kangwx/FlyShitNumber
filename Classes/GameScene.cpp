@@ -5,6 +5,7 @@ USING_NS_CC;
 #define DROP_SHIT_MASK 001
 #define FLY_SHIT_MASK 010
 
+int GameScene::m_bestScore = 0;
 
 string GameScene::num2str(double i)
 {
@@ -61,6 +62,16 @@ bool GameScene::init()
     score->setSystemFontSize(40);
 	score->setTextColor(Color4B::BLUE);
 	this->addChild(score,1001);
+
+	
+	int best = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0); 
+	m_bestScore=best;
+	bestScore = Label::create();
+	bestScore->setPosition(Point(visibleSize.width/2 -350 , visibleSize.height/2+400 ));
+	bestScore->setString(num2str(m_bestScore));
+    bestScore->setSystemFontSize(40);
+	bestScore->setTextColor(Color4B::BLACK);
+	this->addChild(bestScore,1001);
 
     GameBlock::removeAllBlocks();
 
@@ -146,6 +157,7 @@ void GameScene::addEdges(){
 	//sprintf(cNumber, "%d",flyNumber); 
 	string label = num2str(flyNumber);
 
+
 	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,40,Color4B::BLACK);
     gameLayer->addChild(flyShit);
 	flyShit->setTag(flyNumber);
@@ -218,7 +230,13 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				log("new tag: %d",newTag);
 				l->setString( num2str(tagA+tagA) ); 
 				spriteA->setTag(newTag);
-
+				spriteA->runAction(
+					Sequence::create(
+					ScaleTo::create(0.3f,0.7f),
+					ScaleTo::create(0.3f,1),
+					NULL
+					)
+					);
 				spriteB->removeFromParent(); 
 				
 			}
@@ -229,7 +247,13 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				log("new tag: %d",newTag);
 				l->setString( num2str(tagA+tagA) ); 
 				spriteB->setTag(newTag);
-
+				spriteB->runAction(
+					Sequence::create(
+					ScaleTo::create(0.2f,1.5f),
+					ScaleTo::create(0.2f,1),
+					NULL
+					)
+					);
 				spriteA->removeFromParent();
 			}
 			scoreNum = newTag;
@@ -244,7 +268,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 			this->getParent()->visit();  
 			renderTexture->end();
 
-			
+			m_bestScore = scoreNum; 
 			director->pushScene(OverScene::scene(renderTexture,true));
 			 
 		}

@@ -2,6 +2,7 @@
 #include "MainScene.h"
 #include "TDInvFileUtils.h"
 #include "Constants.h"
+#include "GameScene.h"
 
 bool OverScene::init()
 {
@@ -25,9 +26,10 @@ bool OverScene::init()
 	menu->setPosition(Point::ZERO);
 	this->addChild(menu, zorder++); 
 	
-	int bast = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0);
-	 
-		//Cocos2DxFileUtils::saveIntegerDataToSD(SD_BESTSCORE,);
+	int best = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0);
+	if( GameScene::m_bestScore > best ){
+		Cocos2DxFileUtils::saveIntegerDataToSD(SD_BESTSCORE,GameScene::m_bestScore);
+	}
 	 
 
 	return true;

@@ -17,6 +17,9 @@ bool MainScene::init()
 	auto bg = Sprite::create("bg.png");
     bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(bg);
+	auto logo = Sprite::create("logo.png");
+    logo->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + 100));
+    this->addChild(logo);
 	 
 	auto btn_menu = MenuItemImage::create(
 		"btn_start.png",
