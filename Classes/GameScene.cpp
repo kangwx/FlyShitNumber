@@ -6,6 +6,7 @@ USING_NS_CC;
 #define FLY_SHIT_MASK 010
 
 int GameScene::m_bestScore = 0;
+int GameScene::m_scoreNum = 0;
 
 string GameScene::num2str(double i)
 {
@@ -45,20 +46,28 @@ bool GameScene::init()
         return false;
     }
     srand((unsigned int)time(NULL));
-    Size visibleSize   = Director::getInstance()->getVisibleSize();
+    visibleSize   = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
 	flyNumber = 2;
-	scoreNum = 2;
+	GameScene::m_scoreNum = 2;
 	shitCount = 0;
 
 	auto bg = Sprite::create("bg.png");
     bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(bg);
 	
+	startGame();
+
+	
+    return true;
+}
+
+void GameScene::startGame(){
+
 	score = Label::create();
 	score->setPosition(Point(visibleSize.width/2 -350 , visibleSize.height/2+500 ));
-	score->setString(num2str(scoreNum));
+	score->setString(num2str( GameScene::m_scoreNum));
     score->setSystemFontSize(40);
 	score->setTextColor(Color4B::BLUE);
 	this->addChild(score,1001);
@@ -122,9 +131,7 @@ bool GameScene::init()
 
     dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    return true;
 }
-
 void GameScene::dropShit(float dt){
     addNormalLine(3);
 	auto bs = GameBlock::getBlocks();
@@ -249,15 +256,15 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				spriteB->setTag(newTag);
 				spriteB->runAction(
 					Sequence::create(
-					ScaleTo::create(0.2f,1.5f),
-					ScaleTo::create(0.2f,1),
+					ScaleTo::create(0.3f,0.7f),
+					ScaleTo::create(0.3f,1),
 					NULL
 					)
 					);
 				spriteA->removeFromParent();
 			}
-			scoreNum = newTag;
-			score->setString(num2str(scoreNum));
+			 GameScene::m_scoreNum = newTag;
+			score->setString(num2str( GameScene::m_scoreNum));
 			flyNumber = newTag;
 		} else{
 			log("taga != tagb");
@@ -268,7 +275,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 			this->getParent()->visit();  
 			renderTexture->end();
 
-			m_bestScore = scoreNum; 
+			m_bestScore =  GameScene::m_scoreNum; 
 			director->pushScene(OverScene::scene(renderTexture,true));
 			 
 		}

@@ -14,6 +14,7 @@ using namespace std;
 class GameScene : public cocos2d::Layer
 {
 private: 
+	Size visibleSize ;
 	Point beginPoint;
     Node *gameLayer;
     int linesCount;
@@ -23,8 +24,9 @@ private:
 
 public:
 	static int m_bestScore;
+	static int m_scoreNum;
 	int flyNumber ;
-    int scoreNum  ;
+   
     int shitCount ;
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
@@ -41,6 +43,7 @@ public:
 	void addEdges();
 	void dropShit(float dt);
 	string num2str(double i);
+	void startGame();
 
 	bool onContactBegin(    PhysicsContact& contact);
 
