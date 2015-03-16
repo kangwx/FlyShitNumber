@@ -25,7 +25,7 @@ bool MainScene::init()
 		"btn_start.png",
 		"btn_start.png",
 		CC_CALLBACK_1(MainScene::menuPlayCallback, this));
-	btn_menu->setPosition(Point(visibleSize.width/2 + 300  , visibleSize.height/2 - 400 ));
+	btn_menu->setPosition(Point(visibleSize.width/2 + 250  , visibleSize.height/2 - 400 ));
 
 	 auto btn_music = MenuItemImage::create(
 		"btn_music.png",

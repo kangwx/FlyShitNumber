@@ -25,6 +25,7 @@ private:
 public:
 	static int m_bestScore;
 	static int m_scoreNum;
+	static int m_reliveCount;
 	int flyNumber ;
    
     int shitCount ;
@@ -36,6 +37,7 @@ public:
      
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+	void menuPauseCallback(cocos2d::Ref* pSender);
     
     void addNormalLine(int lineIndex);
 	void addDropShit(float dt);

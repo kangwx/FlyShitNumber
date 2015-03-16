@@ -7,6 +7,7 @@ USING_NS_CC;
 
 int GameScene::m_bestScore = 0;
 int GameScene::m_scoreNum = 0;
+int	GameScene::m_reliveCount=10;
 
 string GameScene::num2str(double i)
 {
@@ -45,6 +46,8 @@ bool GameScene::init()
     {
         return false;
     }
+	int zorder = 1000;
+
     srand((unsigned int)time(NULL));
     visibleSize   = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -56,13 +59,34 @@ bool GameScene::init()
 	auto bg = Sprite::create("bg.png");
     bg->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(bg);
+
+	auto btn_menu = MenuItemImage::create(
+		"CloseNormal.png",
+		"CloseSelected.png",
+		CC_CALLBACK_1(GameScene::menuPauseCallback, this));
+	btn_menu->setPosition(Point(visibleSize.width/2 + 300  , visibleSize.height/2 + 400 ));
+
 	
+	auto menu = Menu::create(btn_menu ,NULL);
+	menu->setPosition(Point::ZERO);
+	this->addChild(menu, zorder++); 
 	startGame();
 
 	
     return true;
 }
+void GameScene::menuPauseCallback(cocos2d::Ref* pSender){
+	auto director = Director::getInstance();
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	RenderTexture *renderTexture = RenderTexture::create(visibleSize.width,visibleSize.height);  
+	renderTexture->begin();  
+	this->getParent()->visit();  
+	renderTexture->end();
 
+	//m_bestScore =  PauseScene::m_scoreNum; 
+	director->pushScene(PauseScene::scene(renderTexture,true));
+	//director->pushScene(OverScene::scene(renderTexture,true));
+}
 void GameScene::startGame(){
 
 	score = Label::create();
@@ -72,7 +96,7 @@ void GameScene::startGame(){
 	score->setTextColor(Color4B::BLUE);
 	this->addChild(score,1001);
 
-	
+	GameScene::m_reliveCount = Cocos2DxFileUtils::getIntegerDataFromSD(SD_RELIVECOUNT,10); 
 	int best = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0); 
 	m_bestScore=best;
 	bestScore = Label::create();

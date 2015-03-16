@@ -10,7 +10,7 @@ public:
 	static Scene* scene(RenderTexture* sqr,bool isFlip);
 	virtual bool init();
 	CREATE_FUNC(OverScene);
-	void menuMenuCallback(Ref* pSender);
+	void menuExitCallback(Ref* pSender);
 	void menuReplayCallback(Ref* pSender);
 	void menuNextCallback(Ref* pSender); 
 	 

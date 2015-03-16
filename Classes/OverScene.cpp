@@ -15,14 +15,33 @@ bool OverScene::init()
 	Point origin = Director::getInstance()->getVisibleOrigin();
 	int zorder = 1000;
 	 
+	
+	auto label = LabelTTF::create();
+	char c_title[100];
+	sprintf(c_title,"Do you want to live? +%d",GameScene::m_reliveCount);
+	 
+	label->setString(c_title);
+	label->setFontSize(50);
+	label->setPosition(visibleSize.width/2,visibleSize.height/2+100);
+	addChild(label);
+
 	auto btn_menu = MenuItemImage::create(
 		"exit_0.png",
 		"exit_1.png",
-		CC_CALLBACK_1(OverScene::menuMenuCallback, this));
+		CC_CALLBACK_1(OverScene::menuExitCallback, this));
 	btn_menu->setPosition(Point(visibleSize.width/2 + origin.x - 130, visibleSize.height/2 + origin.y-25));
 
+	 MenuItemFont::setFontSize(50);
+	auto exit_menu = MenuItemFont::create("Exit",CC_CALLBACK_1(OverScene::menuExitCallback, this)); 
+	exit_menu->setPosition(Point(visibleSize.width/2 + origin.x - 250, visibleSize.height/2  - 250));
+	exit_menu->setColor(Color3B::BLACK);
 	 
-	auto menu = Menu::create(btn_menu ,NULL);
+	auto continue_menu = MenuItemFont::create("Continue",CC_CALLBACK_1(OverScene::menuNextCallback, this)); 
+	continue_menu->setPosition(Point(visibleSize.width/2 + origin.x + 250, visibleSize.height/2  - 250));
+
+	continue_menu->setColor(GameScene::m_reliveCount>0?Color3B::BLACK:Color3B::GRAY);
+
+	auto menu = Menu::create(exit_menu,continue_menu ,NULL);
 	menu->setPosition(Point::ZERO);
 	this->addChild(menu, zorder++); 
 	
@@ -51,7 +70,7 @@ Scene* OverScene::scene(RenderTexture* sqr,bool isFlip)
 	return m_scene;  
 }
 
-void OverScene::menuMenuCallback(Ref* pSender)
+void OverScene::menuExitCallback(Ref* pSender)
 {
 	log("pause scene popscene");
 	//Director::getInstance()->popScene();
@@ -67,8 +86,9 @@ void OverScene::menuReplayCallback(Ref* pSender)
 
 void OverScene::menuNextCallback(Ref* pSender)
 {
- 
-	Director::getInstance()->popScene();
+	if(GameScene::m_reliveCount>0){
+		Director::getInstance()->popScene();
+	}
 }
 
  
