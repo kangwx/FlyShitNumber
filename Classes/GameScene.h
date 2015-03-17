@@ -38,6 +38,7 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
 	void menuPauseCallback(cocos2d::Ref* pSender);
+	void menuMusicCallback(cocos2d::Ref* pSender);
     
     void addNormalLine(int lineIndex);
 	void addDropShit(float dt);

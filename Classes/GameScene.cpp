@@ -61,13 +61,19 @@ bool GameScene::init()
     this->addChild(bg);
 
 	auto btn_menu = MenuItemImage::create(
-		"CloseNormal.png",
-		"CloseSelected.png",
+		"pause.png",
+		"pause.png",
 		CC_CALLBACK_1(GameScene::menuPauseCallback, this));
 	btn_menu->setPosition(Point(visibleSize.width/2 + 300  , visibleSize.height/2 + 400 ));
 
+	auto btn_music = MenuItemImage::create(
+		"music_on.png",
+		"music_on.png",
+		CC_CALLBACK_1(GameScene::menuMusicCallback, this));
+	btn_music->setPosition(Point(visibleSize.width/2 - 350  , visibleSize.height/2 + 400 ));
+
 	
-	auto menu = Menu::create(btn_menu ,NULL);
+	auto menu = Menu::create(btn_menu,btn_music ,NULL);
 	menu->setPosition(Point::ZERO);
 	this->addChild(menu, zorder++); 
 	startGame();
@@ -87,10 +93,13 @@ void GameScene::menuPauseCallback(cocos2d::Ref* pSender){
 	director->pushScene(PauseScene::scene(renderTexture,true));
 	//director->pushScene(OverScene::scene(renderTexture,true));
 }
+void GameScene::menuMusicCallback(cocos2d::Ref* pSender){
+	 
+}
 void GameScene::startGame(){
 
 	score = Label::create();
-	score->setPosition(Point(visibleSize.width/2 -350 , visibleSize.height/2+500 ));
+	score->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+500 ));
 	score->setString(num2str( GameScene::m_scoreNum));
     score->setSystemFontSize(40);
 	score->setTextColor(Color4B::BLUE);
@@ -100,7 +109,7 @@ void GameScene::startGame(){
 	int best = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0); 
 	m_bestScore=best;
 	bestScore = Label::create();
-	bestScore->setPosition(Point(visibleSize.width/2 -350 , visibleSize.height/2+400 ));
+	bestScore->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+400 ));
 	bestScore->setString(num2str(m_bestScore));
     bestScore->setSystemFontSize(40);
 	bestScore->setTextColor(Color4B::BLACK);
@@ -192,7 +201,7 @@ void GameScene::addEdges(){
 	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,40,Color4B::BLACK);
     gameLayer->addChild(flyShit);
 	flyShit->setTag(flyNumber);
-	flyShit->setPhysicsBody(PhysicsBody::createBox(flyShit->getContentSize()));
+	flyShit->setPhysicsBody(PhysicsBody::createCircle(flyShit->getContentSize().width/4));
 	flyShit->getPhysicsBody()->setDynamic(false);
 	 
 	flyShit->getPhysicsBody()->setContactTestBitmask(FLY_SHIT_MASK);
@@ -212,7 +221,7 @@ void GameScene::addDropShit(float dt){
 		GameBlock *b;
 		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK);
         gameLayer->addChild(b);
-		b->setPhysicsBody(PhysicsBody::createBox(b->getContentSize()));
+		b->setPhysicsBody(PhysicsBody::createCircle(b->getContentSize().width/4));
 		//b->getPhysicsBody()->setVelocity(Vec2(0,40));
 		b->getPhysicsBody()->setContactTestBitmask(DROP_SHIT_MASK);
 		b->setTag(shitNumber);
@@ -263,7 +272,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				spriteA->setTag(newTag);
 				spriteA->runAction(
 					Sequence::create(
-					ScaleTo::create(0.3f,0.7f),
+					ScaleTo::create(0.3f,1.5f),
 					ScaleTo::create(0.3f,1),
 					NULL
 					)
@@ -280,7 +289,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 				spriteB->setTag(newTag);
 				spriteB->runAction(
 					Sequence::create(
-					ScaleTo::create(0.3f,0.7f),
+					ScaleTo::create(0.3f,1.5f),
 					ScaleTo::create(0.3f,1),
 					NULL
 					)
