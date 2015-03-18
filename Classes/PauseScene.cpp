@@ -1,5 +1,6 @@
 #include "PauseScene.h"
 #include "MainScene.h"
+#include "GameScene.h"
 
 bool PauseScene::init()
 {
@@ -72,13 +73,16 @@ void PauseScene::menuExitCallback(Ref* pSender)
 void PauseScene::menuReplayCallback(Ref* pSender)
 {
 	 
-	Director::getInstance()->popScene();
+	GameScene::m_scoreNum = 2;
+	Director::getInstance()->replaceScene(GameScene::createScene());
 }
 
 void PauseScene::menuNextCallback(Ref* pSender)
 {
- 
 	Director::getInstance()->popScene();
+  
+	//GameScene::m_scoreNum = 2;
+	//Director::getInstance()->replaceScene(GameScene::createScene());
 }
 
  

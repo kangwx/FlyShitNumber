@@ -2,6 +2,7 @@
 #include "GameScene.h"
 
 USING_NS_CC;
+
 bool MainScene::init()
 {
 	if ( !Layer::init() )
@@ -12,6 +13,8 @@ bool MainScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Point origin = Director::getInstance()->getVisibleOrigin();
 	int zorder = 1000;
+	
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("fly.plist", "fly.png");
 	
 
 	auto bg = Sprite::create("bg.png");
@@ -39,7 +42,8 @@ bool MainScene::init()
 
 	return true;
 } 
- Scene* MainScene::createScene()
+
+Scene* MainScene::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
@@ -56,17 +60,15 @@ bool MainScene::init()
     // return the scene
     return scene;
 }
- 
-
+  
 void MainScene::menuMusicCallback(Ref* pSender)
 {
-	 
-	 
+	   
 }
 
 void MainScene::menuPlayCallback(Ref* pSender)
 {
-	 
+	GameScene::m_scoreNum = 2;
 	Director::getInstance()->replaceScene(GameScene::createScene());
 }
 

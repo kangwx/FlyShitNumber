@@ -24,9 +24,9 @@ public:
     static Vector<GameBlock*> * getBlocks();
     static void removeAllBlocks();
     
-    static GameBlock* createWithArgs(Color3B color,Size size,std::string label,float fontSize,Color4B textColor);
+    static GameBlock* createWithArgs(Color3B color,Size size,std::string label,float fontSize,Color4B textColor,boolean isFly);
     
-    virtual bool initWithArgs(Color3B color,Size size,std::string label,float fontSize,Color4B textColor);
+    virtual bool initWithArgs(Color3B color,Size size,std::string label,float fontSize,Color4B textColor,boolean isFly);
     
     void removeBlock();
     
@@ -35,6 +35,7 @@ public:
     
     void moveDown();
     void moveByDirection(char dir);
+	Animate* getFly();
 };
 
 

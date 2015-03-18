@@ -6,7 +6,7 @@ USING_NS_CC;
 #define FLY_SHIT_MASK 010
 
 int GameScene::m_bestScore = 0;
-int GameScene::m_scoreNum = 0;
+int GameScene::m_scoreNum = 2;
 int	GameScene::m_reliveCount=10;
 
 string GameScene::num2str(double i)
@@ -23,8 +23,8 @@ Scene* GameScene::createScene()
     // 'scene' is an autorelease object
     //auto scene = Scene::create();
 	auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vec2(0,-500));
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setGravity(Vec2(0,-550));
     
     
     // 'layer' is an autorelease object
@@ -52,8 +52,8 @@ bool GameScene::init()
     visibleSize   = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
-	flyNumber = 2;
-	GameScene::m_scoreNum = 2;
+	flyNumber =GameScene::m_scoreNum;
+	//GameScene::m_scoreNum = 2;
 	shitCount = 0;
 
 	auto bg = Sprite::create("bg.png");
@@ -198,7 +198,7 @@ void GameScene::addEdges(){
 	string label = num2str(flyNumber);
 
 
-	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,40,Color4B::BLACK);
+	flyShit = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),label,40,Color4B::BLACK,true);
     gameLayer->addChild(flyShit);
 	flyShit->setTag(flyNumber);
 	flyShit->setPhysicsBody(PhysicsBody::createCircle(flyShit->getContentSize().width/4));
@@ -219,7 +219,7 @@ void GameScene::addDropShit(float dt){
 		int shitNumber =rand()%3*flyNumber+flyNumber; 
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		GameBlock *b;
-		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK);
+		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK,false);
         gameLayer->addChild(b);
 		b->setPhysicsBody(PhysicsBody::createCircle(b->getContentSize().width/4));
 		//b->getPhysicsBody()->setVelocity(Vec2(0,40));

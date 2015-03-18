@@ -80,14 +80,18 @@ void OverScene::menuExitCallback(Ref* pSender)
 
 void OverScene::menuReplayCallback(Ref* pSender)
 {
-	 
-	Director::getInstance()->popScene();
+	  
+	GameScene::m_scoreNum = 2;
+	Director::getInstance()->replaceScene(GameScene::createScene());
 }
 
 void OverScene::menuNextCallback(Ref* pSender)
 {
 	if(GameScene::m_reliveCount>0){
-		Director::getInstance()->popScene();
+		//Director::getInstance()->popScene();
+		Director::getInstance()->replaceScene(GameScene::createScene());
+		GameScene::m_reliveCount--;
+		Cocos2DxFileUtils::saveIntegerDataToSD(SD_RELIVECOUNT,GameScene::m_reliveCount); 
 	}
 }
 
