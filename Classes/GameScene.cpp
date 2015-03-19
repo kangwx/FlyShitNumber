@@ -6,8 +6,9 @@ USING_NS_CC;
 #define FLY_SHIT_MASK 010
 
 int GameScene::m_bestScore = 0;
-int GameScene::m_scoreNum = 2;
+int GameScene::m_scoreNum = 2048;
 int	GameScene::m_reliveCount=10;
+int GameScene::gameCount=0;
 
 string GameScene::num2str(double i)
 {
@@ -97,19 +98,32 @@ void GameScene::menuMusicCallback(cocos2d::Ref* pSender){
 	 
 }
 void GameScene::startGame(){
+	txt_score = Label::create();
+	txt_score->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+500 ));
+	txt_score->setString("Score:");
+    txt_score->setSystemFontSize(40);
+	txt_score->setTextColor(Color4B::BLUE);
+	this->addChild(txt_score,1001);
 
 	score = Label::create();
-	score->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+500 ));
+	score->setPosition(Point(visibleSize.width/2 -130 , visibleSize.height/2+500 ));
 	score->setString(num2str( GameScene::m_scoreNum));
     score->setSystemFontSize(40);
 	score->setTextColor(Color4B::BLUE);
 	this->addChild(score,1001);
 
+	txt_best_score = Label::create();
+	txt_best_score->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+400 ));
+	txt_best_score->setString("Best: ");
+    txt_best_score->setSystemFontSize(40);
+	txt_best_score->setTextColor(Color4B::BLACK);
+	this->addChild(txt_best_score,1001);
+
 	GameScene::m_reliveCount = Cocos2DxFileUtils::getIntegerDataFromSD(SD_RELIVECOUNT,10); 
 	int best = Cocos2DxFileUtils::getIntegerDataFromSD(SD_BESTSCORE,0); 
 	m_bestScore=best;
 	bestScore = Label::create();
-	bestScore->setPosition(Point(visibleSize.width/2 -250 , visibleSize.height/2+400 ));
+	bestScore->setPosition(Point(visibleSize.width/2 -130 , visibleSize.height/2+400 ));
 	bestScore->setString(num2str(m_bestScore));
     bestScore->setSystemFontSize(40);
 	bestScore->setTextColor(Color4B::BLACK);
@@ -215,8 +229,15 @@ void GameScene::addEdges(){
 void GameScene::addDropShit(float dt){
 	if(shitCount>0){
 		int lineIndex =3;
-		int blackIndex = rand()%4;
-		int shitNumber =rand()%3*flyNumber+flyNumber; 
+		int blackIndex = rand()%4;  
+		//int shitNumber =rand()%3*flyNumber+flyNumber; 
+		int randNum = rand()%3;
+		int shitNumber=flyNumber;
+		while(randNum>0){
+			shitNumber*=2;
+			randNum--;
+		}
+		 
 		Size visibleSize = Director::getInstance()->getVisibleSize();
 		GameBlock *b;
 		b = GameBlock::createWithArgs( Color3B::WHITE,Size(visibleSize.width/4-1, visibleSize.height/4-1),num2str(shitNumber),40,Color4B::BLACK,false);

@@ -8,7 +8,7 @@
 #include "Constants.h"
 #include "OverScene.h"
 #include <sstream>
-#include <string>
+#include <string> 
 
 using namespace std;
 class GameScene : public cocos2d::Layer
@@ -20,12 +20,15 @@ private:
     int linesCount;
 	GameBlock *flyShit;
 	Label *score;
+	Label *txt_score;
+	Label *txt_best_score;
 	Label *bestScore;
 
 public:
 	static int m_bestScore;
 	static int m_scoreNum;
 	static int m_reliveCount;
+	static int gameCount;
 	int flyNumber ;
    
     int shitCount ;

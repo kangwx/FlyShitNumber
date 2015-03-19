@@ -67,6 +67,13 @@ Scene* OverScene::scene(RenderTexture* sqr,bool isFlip)
 	layerr->setScale(0.1f);
 	m_scene->addChild(layerr);
 	layerr->runAction(ScaleTo::create(0.5f,1.0f));
+
+	GameScene::gameCount++;
+	if(GameScene::gameCount>5){
+		GameScene::m_reliveCount++;
+		GameScene::gameCount=0;
+	}
+
 	return m_scene;  
 }
 
@@ -75,7 +82,7 @@ void OverScene::menuExitCallback(Ref* pSender)
 	log("pause scene popscene");
 	//Director::getInstance()->popScene();
 	Director::getInstance()->replaceScene(MainScene::createScene());
-	 
+ 
 }
 
 void OverScene::menuReplayCallback(Ref* pSender)
@@ -89,10 +96,16 @@ void OverScene::menuNextCallback(Ref* pSender)
 {
 	if(GameScene::m_reliveCount>0){
 		//Director::getInstance()->popScene();
+		
+		
+
 		Director::getInstance()->replaceScene(GameScene::createScene());
 		GameScene::m_reliveCount--;
 		Cocos2DxFileUtils::saveIntegerDataToSD(SD_RELIVECOUNT,GameScene::m_reliveCount); 
+
+
 	}
+
 }
 
  

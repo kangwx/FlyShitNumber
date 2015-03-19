@@ -78,7 +78,7 @@ bool GameBlock::initWithArgs(Color3B color,Size size,std::string label,float fon
     l->setSystemFontSize(fontSize);
     l->setTextColor(textColor);
     addChild(l);
-    l->setPosition(size.width/2,size.height/2);
+    l->setPosition(size.width/2,size.height/2-20);
     if(isFly){
 		auto tmp_sp = Sprite::createWithSpriteFrameName("fly_1.png");
 		tmp_sp->setPosition(Point(this->getContentSize().width/2,this->getContentSize().height/2));
