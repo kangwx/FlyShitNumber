@@ -66,8 +66,10 @@ bool GameBlock::initWithArgs(Color3B color,Size size,std::string label,float fon
 	//setAnchorPoint(Point(-size.width/2,-size.height/2));
     //setTextureRect(Rect(0, 0, size.width, size.height));
     //setColor(color);
-    
-	auto shit = Sprite::create("shit.png");
+  
+	std::string imgName = "shit_"+label+".png";
+	auto shit = Sprite::create(imgName);
+	shit->setName("img");
 	this->addChild(shit);
 	shit->setPosition(this->getContentSize().width/2,this->getContentSize().height/2);
 

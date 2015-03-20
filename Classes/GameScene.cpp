@@ -284,10 +284,14 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 	 case FLY_SHIT_MASK | DROP_SHIT_MASK:
 		log("onContactBegin FLY_SHIT_MASK and DROP_SHIT_MASK tagA:%d",tagA);
 		if(tagA==tagB){
+			char newTexture[100];
 			int newTag = tagA+tagA;
+			sprintf(newTexture,"shit_%d.png",newTag);
 			if(contact.getShapeA()->getBody()->getContactTestBitmask() == FLY_SHIT_MASK){ 
 				Label* l =(Label*) spriteA->getChildByName("num");
-				
+				Sprite* img =(Sprite*) spriteA->getChildByName("img");
+				img->setTexture(newTexture);
+				 
 				log("new tag: %d",newTag);
 				l->setString( num2str(tagA+tagA) ); 
 				spriteA->setTag(newTag);
@@ -298,13 +302,15 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 					NULL
 					)
 					);
+				  
 				spriteB->removeFromParent(); 
 				
 			}
 
 			if(contact.getShapeB()->getBody()->getContactTestBitmask() == FLY_SHIT_MASK){
 				Label* l =(Label*) spriteB->getChildByName("num");
-				 
+				 Sprite* img =(Sprite*) spriteB->getChildByName("img");
+				 img->setTexture(newTexture); 
 				log("new tag: %d",newTag);
 				l->setString( num2str(tagA+tagA) ); 
 				spriteB->setTag(newTag);
@@ -315,6 +321,7 @@ auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 					NULL
 					)
 					);
+				 
 				spriteA->removeFromParent();
 			}
 			 GameScene::m_scoreNum = newTag;
